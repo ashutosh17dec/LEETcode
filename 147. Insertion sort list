@@ -1,0 +1,81 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def insertionSortList(self, head):
+        p = dummy = ListNode(0)
+        cur = dummy.next = head
+        while cur and cur.next:
+            val = cur.next.val
+            if cur.val < val:
+                    cur = cur.next
+                    continue
+            if p.next.val > val:
+                    p = dummy
+            while p.next.val < val:
+                    p = p.next
+            new = cur.next
+            cur.next = new.next
+            new.next = p.next
+            p.next = new
+        return dummy.next
+    def insertionSortListMY(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head ==None or head.next == None:
+            return head
+        d1 = ListNode(0)
+        d1.next = head
+        dummy = d1
+        c = 0
+        n = 0
+        kfollow = head
+        if head.next:
+            k = head.next
+        while k:
+            
+            while dummy.next != k:
+                n+=1
+                if dummy.next.val > k.val:
+                    kfollow.next = k.next
+                    k.next = dummy.next
+                    dummy.next = k
+                    c = 1
+                else:
+                    dummy = dummy.next
+            dummy = d1
+            if c==1:
+                k = kfollow.next
+                c = 0
+            else:
+                kfollow = k
+                k = k.next
+        print n
+        return d1.next
+    def insertionSortList57(self, head):
+        if not head or not head.next: return head
+        out = head
+        head = head.next
+        tail = out
+        while head:
+            temp = head
+            head = head.next
+            if temp.val <= out.val:
+                temp.next = out
+                out = temp
+            elif temp.val >= tail.val:
+                tail.next = temp
+                tail = temp
+            else:
+                it = out
+                while it.next != tail and it.next.val < temp.val:
+                    it = it.next
+                temp.next = it.next
+                it.next = temp
+        tail.next = None
+        return out
