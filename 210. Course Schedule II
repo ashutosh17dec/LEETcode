@@ -1,0 +1,70 @@
+from collections import defaultdict
+from collections import deque
+class Solution(object):
+    def findOrder(self, num, pre):
+        Class = [[] for _ in range(num)]
+        req = [set() for _ in range(num)]
+        queue = deque()
+        res = []
+        
+        for x,y in pre:
+            Class[y].append(x)
+            req[x].add(y)
+            
+        for i in range(num):
+            if not req[i]:
+                queue.append(i)
+                
+        while queue:
+            cur = queue.popleft()
+            num -= 1
+            for nxt in Class[cur]:
+                req[nxt].remove(cur)
+                if not req[nxt]:
+                    queue.append(nxt)
+            res.append(cur)
+                
+        if num > 0:
+            return []
+        else:
+            return res
+    
+    
+    
+    
+    def findOrdermy(self, num, prereq):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        a = []
+        b = []
+        last = []
+        graph = defaultdict(list)
+        for i ,j in prereq:
+                graph[j].append(i)
+                a.append(i)
+                if j not in b:
+                    b.append(j)
+        w = list(set(b)-set(a))
+        for i in range(0,num):
+            if i not in (a+b):
+                    last.append(i)
+        
+        while w:
+            n = w.pop()
+            last.append(n)
+            for i in graph[n]:
+                if [i,n] in prereq:
+                    prereq.remove([i,n])
+                    a.remove(i)
+                if i in a:
+                    continue
+                else:
+                    w.append(i)
+        if prereq:
+            if num > len(last):
+                return []
+        return last
+        
