@@ -1,0 +1,26 @@
+class Solution(object):
+    def maxChunksToSorted(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        
+        ret = 1
+        
+        b_min = []
+        c_min = arr[-1]
+        for num in arr[::-1]:
+            print(num)
+            if num < c_min:
+                c_min = num
+            b_min.append(c_min)
+        b_min = b_min[::-1]
+        
+        c_max = 0
+        for i, num in enumerate(arr[:-1]):
+            if num > c_max:
+                c_max = num
+            if b_min[i+1] >= c_max:
+                ret += 1
+        
+        return ret
